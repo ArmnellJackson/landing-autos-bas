@@ -1,0 +1,60 @@
+---
+import { Phone, Menu, Search, User } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+---
+
+<header class="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border/40 transition-all duration-300 h-20 flex items-center">
+  <div class="container mx-auto px-4 md:px-6 flex items-center justify-between">
+    <!-- Logo -->
+    <a href="/" class="flex items-center gap-2 group">
+      <div class="bg-primary p-1.5 rounded-sm group-hover:scale-110 transition-transform duration-300">
+        <span class="text-white font-black text-xl leading-none">B</span>
+      </div>
+      <div class="flex flex-col leading-none">
+        <span class="text-foreground font-bold text-lg uppercase tracking-tighter italic">Autos Bas</span>
+        <span class="text-[10px] text-muted-foreground uppercase tracking-widest font-medium">Dealer Miami</span>
+      </div>
+    </a>
+
+    <!-- Desktop Navigation -->
+    <nav class="hidden lg:flex items-center gap-8">
+      {['Home', 'Inventory', 'About Us', 'Blog', 'Contact'].map((item) => (
+        <a 
+          href={`#${item.toLowerCase().replace(' ', '-')}`} 
+          class="text-sm font-medium text-foreground/80 hover:text-primary transition-colors duration-200 relative group"
+        >
+          {item}
+          <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full"></span>
+        </a>
+      ))}
+    </nav>
+
+    <!-- Actions -->
+    <div class="flex items-center gap-2 md:gap-4">
+      <div class="hidden sm:flex items-center gap-3 mr-4 text-right">
+        <div class="flex flex-col">
+          <span class="text-[10px] text-muted-foreground uppercase tracking-wider font-bold">Call Us 24/7</span>
+          <a href="tel:+13051234567" class="text-sm font-bold hover:text-primary transition-colors">+1 (305) 123-4567</a>
+        </div>
+        <div class="bg-primary/10 p-2 rounded-full text-primary">
+          <Phone size={18} />
+        </div>
+      </div>
+
+      <div class="flex items-center gap-1 md:gap-2">
+        <Button variant="ghost" size="icon" className="hidden md:flex rounded-full">
+          <Search size={20} />
+        </Button>
+        <Button variant="ghost" size="icon" className="hidden md:flex rounded-full">
+          <User size={20} />
+        </Button>
+        <Button className="rounded-full px-6 font-bold shadow-lg shadow-primary/20 hover:scale-105 transition-transform duration-300">
+          Book Now
+        </Button>
+        <Button variant="ghost" size="icon" className="lg:hidden rounded-full">
+          <Menu size={24} />
+        </Button>
+      </div>
+    </div>
+  </div>
+</header>
