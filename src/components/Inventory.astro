@@ -1,0 +1,122 @@
+---
+import { Users, Fuel, Gauge, ArrowUpRight } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+} from "@/components/ui/card";
+
+const cars = [
+  {
+    name: "Rolls-Royce Ghost",
+    price: "$450,000",
+    image: "https://images.unsplash.com/photo-1631214548473-70d4844401a6?auto=format&fit=crop&q=80&w=800",
+    specs: { people: 4, fuel: "Gasoline", trans: "Auto" },
+    tag: "Luxury"
+  },
+  {
+    name: "Bentley Continental GT",
+    price: "$280,000",
+    image: "https://images.unsplash.com/photo-1621135802920-133df287f89c?auto=format&fit=crop&q=80&w=800",
+    specs: { people: 4, fuel: "Gasoline", trans: "Auto" },
+    tag: "Exotic"
+  },
+  {
+    name: "Ferrari 812 Superfast",
+    price: "$335,000",
+    image: "https://images.unsplash.com/photo-1592198084033-aade902d1aae?auto=format&fit=crop&q=80&w=800",
+    specs: { people: 2, fuel: "Hybrid", trans: "Manual" },
+    tag: "Sport"
+  },
+  {
+    name: "Porsche 911 Turbo S",
+    price: "$210,000",
+    image: "https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&q=80&w=800",
+    specs: { people: 4, fuel: "Gasoline", trans: "Auto" },
+    tag: "Sport"
+  },
+  {
+    name: "Range Rover SV",
+    price: "$180,000",
+    image: "https://images.unsplash.com/photo-1541899481282-d53bffe3c35d?auto=format&fit=crop&q=80&w=800",
+    specs: { people: 5, fuel: "Diesel", trans: "Auto" },
+    tag: "SUV"
+  },
+  {
+    name: "Lamborghini Urus",
+    price: "$230,000",
+    image: "https://images.unsplash.com/photo-1580273916550-e323be2ae537?auto=format&fit=crop&q=80&w=800",
+    specs: { people: 5, fuel: "Gasoline", trans: "Auto" },
+    tag: "SUV"
+  }
+];
+---
+
+<section id="inventory" class="py-24 bg-muted/30">
+  <div class="container mx-auto px-4 md:px-6">
+    <div class="flex flex-col md:flex-row justify-between items-end gap-6 mb-12">
+      <div class="space-y-4">
+        <Badge variant="outline" class="text-primary border-primary/20 uppercase tracking-widest px-4 py-1 font-bold">Featured Fleet</Badge>
+        <h2 class="text-4xl md:text-5xl font-black text-foreground uppercase tracking-tighter leading-none">
+          EXPLORE OUR <span class="text-primary italic">EXCLUSIVE</span> INVENTORY
+        </h2>
+        <p class="text-muted-foreground max-w-xl font-medium">
+          Choose from our carefully curated selection of high-performance and luxury vehicles 
+          available for immediate delivery.
+        </p>
+      </div>
+      <Button variant="outline" className="rounded-full px-8 font-bold border-2 h-12 hover:bg-primary hover:text-white transition-all group">
+        View All Cars
+        <ArrowUpRight size={18} class="ml-2 group-hover:rotate-45 transition-transform" />
+      </Button>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      {cars.map((car) => (
+        <Card class="group overflow-hidden border-none shadow-xl hover:shadow-2xl transition-all duration-500 bg-background rounded-3xl">
+          <CardHeader class="p-0 relative h-64 overflow-hidden">
+            <div class="absolute top-4 left-4 z-20">
+              <Badge class="bg-primary/90 hover:bg-primary text-white font-bold px-3 py-1 rounded-lg backdrop-blur-sm">
+                {car.tag}
+              </Badge>
+            </div>
+            <img 
+              src={car.image} 
+              alt={car.name} 
+              class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+            />
+            <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+          </CardHeader>
+          <CardContent class="p-6">
+            <div class="flex justify-between items-start mb-4">
+              <h3 class="text-xl font-black uppercase tracking-tight group-hover:text-primary transition-colors">{car.name}</h3>
+              <span class="text-xl font-black text-primary italic">{car.price}</span>
+            </div>
+            
+            <div class="grid grid-cols-3 gap-4 py-4 border-y border-border/50">
+              <div class="flex flex-col items-center gap-1">
+                <Users size={18} class="text-muted-foreground" />
+                <span class="text-[10px] font-bold uppercase text-muted-foreground">{car.specs.people} Seats</span>
+              </div>
+              <div class="flex flex-col items-center gap-1 border-x border-border/50">
+                <Gauge size={18} class="text-muted-foreground" />
+                <span class="text-[10px] font-bold uppercase text-muted-foreground">{car.specs.trans}</span>
+              </div>
+              <div class="flex flex-col items-center gap-1">
+                <Fuel size={18} class="text-muted-foreground" />
+                <span class="text-[10px] font-bold uppercase text-muted-foreground">{car.specs.fuel}</span>
+              </div>
+            </div>
+          </CardContent>
+          <CardFooter class="p-6 pt-0 flex gap-3">
+            <Button className="w-full rounded-xl font-bold uppercase tracking-widest h-12 shadow-lg shadow-primary/10">Buy Now</Button>
+            <Button variant="outline" className="w-full rounded-xl font-bold uppercase tracking-widest h-12 border-2">Details</Button>
+          </CardFooter>
+        </Card>
+      ))}
+    </div>
+  </div>
+</section>
