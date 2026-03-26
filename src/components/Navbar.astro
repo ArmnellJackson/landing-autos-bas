@@ -1,7 +1,9 @@
 ---
-/* Barra de navegación fija: logo, enlaces (sin blog), selector de tema, traductor, botón WhatsApp. */
+/* Barra de navegación fija: logo, enlaces (sin blog), selector de tema, traductor, botón WhatsApp
+   y portal del cliente (auth + chat) como React island con hidratación en el navegador. */
 import { Menu, Sun, Moon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import ClientPortal from '@/components/ClientPortal';
 ---
 
 <header class="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border/40 transition-all duration-300 h-20 flex items-center">
@@ -52,6 +54,9 @@ import { Button } from '@/components/ui/button';
         <span id="icon-sun"><Sun size={20} /></span>
         <span id="icon-moon" style="display:none;"><Moon size={20} /></span>
       </button>
+
+      <!-- Portal del cliente: autenticación y chat en tiempo real -->
+      <ClientPortal client:load />
 
       <div class="flex items-center gap-1 md:gap-2">
         <!-- Botón principal: abre WhatsApp con mensaje predeterminado -->
