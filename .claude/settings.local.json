@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(grep -r \"rental\\\\|rent\\\\|alquil\" /c/Users/armne/OneDrive/Escritorio/proyectos/AutosBasDealerMiami/landing-autos-bas/src --include=*.astro --include=*.tsx --include=*.ts)",
+      "Bash(pnpm build:*)"
+    ]
+  }
+}

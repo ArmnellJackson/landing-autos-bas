@@ -1,4 +1,5 @@
 ---
+/* Layout principal: estructura HTML, meta tags, script de tema claro/oscuro y widget de Google Translate. */
 import '../styles/global.css';
 
 interface Props {
@@ -6,11 +7,11 @@ interface Props {
 	description?: string;
 }
 
-const { title, description = "Autos Bas Dealer Miami - High-end luxury cars" } = Astro.props;
+const { title, description = "Autos Bas Dealer Miami - Premium luxury car sales in South Florida" } = Astro.props;
 ---
 
 <!doctype html>
-<html lang="es">
+<html lang="en">
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width" />
@@ -18,6 +19,31 @@ const { title, description = "Autos Bas Dealer Miami - High-end luxury cars" } =
 		<meta name="generator" content={Astro.generator} />
 		<meta name="description" content={description} />
 		<title>{title}</title>
+
+		<!-- Script de inicialización de tema: evita parpadeo leyendo preferencia antes del render -->
+		<script is:inline>
+			(function() {
+				const stored = localStorage.getItem('theme');
+				if (stored === 'dark') {
+					document.documentElement.classList.add('dark');
+				} else {
+					document.documentElement.classList.remove('dark');
+				}
+			})();
+		</script>
+
+		<!-- Google Translate Element: carga el widget de traducción automática -->
+		<script is:inline>
+			function googleTranslateElementInit() {
+				new google.translate.TranslateElement({
+					pageLanguage: 'en',
+					includedLanguages: 'en,es,fr,de,it,pt,nl,pl,ro,sv,da,no,fi,el,hu,cs,bg,hr,sk,sl',
+					layout: google.translate.TranslateElement.InlineLayout.HORIZONTAL,
+					autoDisplay: false
+				}, 'google_translate_element');
+			}
+		</script>
+		<script is:inline src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 	</head>
 	<body class="bg-background text-foreground antialiased overflow-x-hidden">
 		<slot />
@@ -30,5 +56,31 @@ const { title, description = "Autos Bas Dealer Miami - High-end luxury cars" } =
 		margin: 0;
 		width: 100%;
 		height: 100%;
+	}
+	/* Oculta la barra superior del widget de Google Translate */
+	:global(.goog-te-banner-frame) {
+		display: none !important;
+	}
+	:global(body) {
+		top: 0 !important;
+	}
+	/* Estilos del selector de idioma de Google Translate */
+	:global(.goog-te-gadget) {
+		font-size: 0 !important;
+	}
+	:global(.goog-te-combo) {
+		font-size: 12px !important;
+		padding: 4px 8px;
+		border-radius: 8px;
+		border: 1px solid oklch(0.90 0 0);
+		background: transparent;
+		color: inherit;
+		font-family: 'Geist Variable', sans-serif;
+		font-weight: 600;
+		cursor: pointer;
+	}
+	:global(.dark .goog-te-combo) {
+		border-color: oklch(1 0 0 / 12%);
+		color: oklch(0.95 0 0);
 	}
 </style>
