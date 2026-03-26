@@ -176,18 +176,33 @@ export default function ChatModal({ isOpen, onClose, userId, userName }: ChatMod
         suscribirRealtime(convId);
       }
 
-      /* Inserta el mensaje con es_staff=false y autor_id del cliente autenticado */
-      const { error: msgError } = await supabase.from('mensajes').insert({
-        conversacion_id: convId,
-        autor_id: userId,
-        es_staff: false,
-        contenido,
-      });
+      /* Inserta el mensaje y recupera la fila completa con .select() para
+         agregarlo al estado local inmediatamente sin depender de que Realtime
+         ya esté conectado (soluciona que el primer mensaje no aparezca) */
+      const { data: msgData, error: msgError } = await supabase
+        .from('mensajes')
+        .insert({
+          conversacion_id: convId,
+          autor_id: userId,
+          es_staff: false,
+          contenido,
+        })
+        .select()
+        .single();
 
       if (msgError) throw msgError;
 
+      /* Agrega el mensaje al estado local; el dedup en Realtime previene duplicados */
+      if (msgData) {
+        setMensajes((prev) => {
+          if (prev.some((m) => m.id === msgData.id)) return prev;
+          return [...prev, msgData];
+        });
+      }
+
       setInputValue('');
-      inputRef.current?.focus();
+      /* setTimeout garantiza que el focus se aplique después del re-render */
+      setTimeout(() => inputRef.current?.focus(), 0);
     } catch (err: any) {
       toast.error(err?.message || 'Error al enviar el mensaje');
     } finally {

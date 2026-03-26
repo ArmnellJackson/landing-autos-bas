@@ -93,6 +93,15 @@ export default function AuthModal({ isOpen, onClose, onAuthSuccess }: AuthModalP
 
         if (authError) throw authError;
 
+        /* Login automático tras registro: el trigger auto_confirm_user confirma
+           el email inmediatamente, así que podemos iniciar sesión al instante */
+        const { error: loginError } = await supabase.auth.signInWithPassword({
+          email,
+          password,
+        });
+
+        if (loginError) throw loginError;
+
         toast.success('¡Cuenta creada exitosamente!');
         onAuthSuccess();
       } else {
