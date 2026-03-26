@@ -57,18 +57,29 @@ const { title, description = "Autos Bas Dealer Miami - Premium luxury car sales 
 		width: 100%;
 		height: 100%;
 	}
-	/* Oculta la barra superior del widget de Google Translate */
-	:global(.goog-te-banner-frame) {
+	/* Oculta la barra superior del widget de Google Translate y el iframe de notificación */
+	:global(.goog-te-banner-frame),
+	:global(#goog-gt-tt),
+	:global(.goog-te-balloon-frame),
+	:global(.goog-tooltip),
+	:global(.goog-tooltip:hover) {
 		display: none !important;
 	}
 	:global(body) {
 		top: 0 !important;
+		position: static !important;
 	}
-	/* Estilos del selector de idioma de Google Translate */
+	/* Oculta el texto "Powered by Google Traductor" y enlaces extra del widget */
 	:global(.goog-te-gadget) {
 		font-size: 0 !important;
+		color: transparent !important;
+	}
+	:global(.goog-te-gadget span),
+	:global(.goog-te-gadget a) {
+		display: none !important;
 	}
 	:global(.goog-te-combo) {
+		display: inline-block !important;
 		font-size: 12px !important;
 		padding: 4px 8px;
 		border-radius: 8px;
@@ -82,5 +93,12 @@ const { title, description = "Autos Bas Dealer Miami - Premium luxury car sales 
 	:global(.dark .goog-te-combo) {
 		border-color: oklch(1 0 0 / 12%);
 		color: oklch(0.95 0 0);
+	}
+	/* Oculta la barra de traducción que aparece al traducir la página */
+	:global(.skiptranslate) {
+		display: none !important;
+	}
+	:global(#google_translate_element .skiptranslate) {
+		display: block !important;
 	}
 </style>
