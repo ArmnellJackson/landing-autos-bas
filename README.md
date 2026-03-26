@@ -27,3 +27,5 @@ pnpm build
   Resolucion tecnica: se reemplazaron por iconos compatibles con el bundle actual.
 - Error de resolucion de imports CSS externos: Vite no podia resolver `@import "tw-animate-css"` ni `@import "shadcn/tailwind.css"` desde `src/styles/global.css`.
   Resolucion tecnica: se eliminaron ambos imports no resolubles y se implementaron utilidades locales de animacion para `animate-in`, `animate-out`, `fade-in-0`, `fade-out-0`, `zoom-in-95`, `zoom-out-95` y desplazamientos usados por shadcn/ui.
+- Error de resolucion de `tslib` en Vercel: el build remoto fallo al empaquetar `react-remove-scroll`, dependencia transitiva de Radix UI, porque `tslib` no estaba disponible como dependencia instalada.
+  Resolucion tecnica: se declaro `tslib` como dependencia directa del proyecto para estabilizar la resolucion de imports ESM en entornos CI y despliegues de Vercel.
