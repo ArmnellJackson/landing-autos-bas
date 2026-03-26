@@ -1,27 +1,29 @@
 # Autos Bas Dealer Miami - Landing Page
 
-Proyecto de landing page de alta gama para un concesionario de vehículos de lujo en Miami, desarrollado con **Astro**, **Tailwind CSS v4** y **shadcn/ui**.
+Landing page para un concesionario de vehiculos de lujo en Miami, desarrollada con Astro, Tailwind CSS v4 y componentes basados en shadcn/ui.
 
-## 🚀 Tecnologías y Herramientas
-- **Astro**: Framework principal para una entrega de contenido rápida y eficiente.
-- **Tailwind CSS v4**: Sistema de diseño con configuración nativa mediante CSS variables y OKLCH.
-- **shadcn/ui**: Componentes de interfaz accesibles y altamente personalizables.
-- **Lucide React**: Biblioteca de iconos modernos y coherentes.
+## Tecnologias y Herramientas
+- Astro para la composicion de paginas y el build estatico.
+- Tailwind CSS v4 con tokens en CSS variables y paleta OKLCH.
+- shadcn/ui y Radix UI para componentes accesibles e interactivos.
+- React para la hidratacion puntual de componentes con estado.
+- Lucide React para iconografia consistente.
 
-## 🎨 Diseño y Estética
-El diseño se basa en una referencia de Dribbble con las siguientes características:
-- **Paleta de Colores**: Fondo blanco limpio, secciones oscuras profundas (#1A1A1A) y acentos en rojo vibrante (#E31B23) para CTAs y elementos clave.
-- **Tipografía**: Jerarquía potente con títulos en pesos Bold/Black para transmitir potencia y exclusividad.
-- **Componentes**: Hero dinámico, barra de filtros avanzada, catálogo de inventario detallado y sección de valor asimétrica.
+## Diseno y Estetica
+- Direccion visual premium con contraste entre fondos claros, secciones oscuras y acentos rojos.
+- Tipografia Geist Variable para jerarquia marcada y lectura limpia.
+- Estructura enfocada en hero, filtros de busqueda, catalogo e informacion de valor.
 
-## 🛠️ Log de Errores y Resoluciones
-- **Error de Contexto en React**: Los componentes de Radix UI (`Select`, `Tabs`) fallaban durante el build al ser renderizados de forma individual en Astro.
-  - *Resolución*: Se encapsularon los filtros de búsqueda en un único componente de React (`SearchFilters.tsx`) y se utilizó la directiva `client:load` para asegurar la hidratación del contexto en el cliente.
-- **Iconos de Redes Sociales**: La versión de `lucide-react` presentaba problemas de exportación para iconos sociales específicos en entorno ESM.
-  - *Resolución*: Se sustituyeron por iconos genéricos (`Globe`, `Message`, `User`) para garantizar la estabilidad del build sin comprometer la funcionalidad.
-
-## 📦 Comandos Disponibles
+## Comandos Disponibles
 ```bash
-pnpm dev    # Iniciar servidor de desarrollo
-pnpm build  # Generar build de producción
+pnpm dev
+pnpm build
 ```
+
+## Log de Errores
+- Error de contexto en React: componentes de Radix UI como Select y Tabs fallaban durante el build al renderizarse fuera de un arbol hidratado.
+  Resolucion tecnica: se agruparon los filtros interactivos en un componente React y se uso hidratacion en cliente para preservar el contexto.
+- Error de iconos en lucide-react: algunos iconos sociales presentaban incompatibilidades de exportacion en entorno ESM.
+  Resolucion tecnica: se reemplazaron por iconos compatibles con el bundle actual.
+- Error de resolucion de imports CSS externos: Vite no podia resolver `@import "tw-animate-css"` ni `@import "shadcn/tailwind.css"` desde `src/styles/global.css`.
+  Resolucion tecnica: se eliminaron ambos imports no resolubles y se implementaron utilidades locales de animacion para `animate-in`, `animate-out`, `fade-in-0`, `fade-out-0`, `zoom-in-95`, `zoom-out-95` y desplazamientos usados por shadcn/ui.
