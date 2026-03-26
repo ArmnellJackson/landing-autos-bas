@@ -135,7 +135,7 @@ const VehicleCard = React.memo(function VehicleCard({ data }: { data: CardData }
           </span>
         </div>
         <p className="text-xs text-muted-foreground font-medium mb-4">
-          {data.anio} · {data.color} · {data.millajeFormateado} mi
+          {data.anio} · {data.color}
         </p>
 
         {/* Especificaciones del vehículo */}

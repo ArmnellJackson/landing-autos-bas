@@ -1,6 +1,6 @@
 ---
 /* Barra de navegación fija: logo, enlaces (sin blog), selector de tema, traductor, botón WhatsApp. */
-import { Phone, Menu, Sun, Moon } from 'lucide-react';
+import { Menu, Sun, Moon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 ---
 
@@ -40,17 +40,6 @@ import { Button } from '@/components/ui/button';
 
     <!-- Acciones: teléfono, traductor, tema, WhatsApp -->
     <div class="flex items-center gap-2 md:gap-3">
-      <!-- Información de contacto (visible en pantallas medianas+) -->
-      <div class="hidden sm:flex items-center gap-3 mr-2 text-right">
-        <div class="flex flex-col">
-          <span class="text-[10px] text-muted-foreground uppercase tracking-wider font-bold">Call Us 24/7</span>
-          <a href="tel:+51929438206" class="text-sm font-bold hover:text-primary transition-colors">+51 929 438 206</a>
-        </div>
-        <div class="bg-primary/10 p-2 rounded-full text-primary">
-          <Phone size={18} />
-        </div>
-      </div>
-
       <!-- Widget de Google Translate -->
       <div id="google_translate_element" class="hidden md:block"></div>
 
