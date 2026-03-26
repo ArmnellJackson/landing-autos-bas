@@ -1,15 +1,15 @@
 ---
-/* Barra de navegación fija: logo, enlaces (sin blog), selector de tema, traductor, botón WhatsApp
-   y portal del cliente (auth + chat) como React island con hidratación en el navegador. */
-import { Menu, Sun, Moon } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+/* Barra de navegación fija con menú móvil desplegable: logo, enlaces, selector de tema,
+   traductor, botón WhatsApp y portal del cliente (auth + chat) como React island.
+   El menú móvil se controla via script vanilla para evitar hidratación innecesaria. */
+import { Menu, X, Sun, Moon } from 'lucide-react';
 import ClientPortal from '@/components/ClientPortal';
 ---
 
-<header class="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border/40 transition-all duration-300 h-20 flex items-center">
+<header class="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border/40 transition-all duration-300 h-16 sm:h-20 flex items-center">
   <div class="container mx-auto px-4 md:px-6 flex items-center justify-between">
     <!-- Logo -->
-    <a href="/" class="flex items-center gap-2 group">
+    <a href="/" class="flex items-center gap-2 group shrink-0">
       <div class="bg-primary p-1.5 rounded-sm group-hover:scale-110 transition-transform duration-300">
         <span class="text-white font-black text-xl leading-none">B</span>
       </div>
@@ -19,8 +19,7 @@ import ClientPortal from '@/components/ClientPortal';
       </div>
     </a>
 
-    <!-- Navegación de escritorio (sin Blog) -->
-    <!-- Navegación de escritorio: Home apunta al inicio de la página -->
+    <!-- Navegación de escritorio: enlaces horizontales visibles solo en lg+ -->
     <nav class="hidden lg:flex items-center gap-8">
       <a
         href="#"
@@ -40,9 +39,9 @@ import ClientPortal from '@/components/ClientPortal';
       ))}
     </nav>
 
-    <!-- Acciones: teléfono, traductor, tema, WhatsApp -->
-    <div class="flex items-center gap-2 md:gap-3">
-      <!-- Widget de Google Translate -->
+    <!-- Acciones: traductor, tema, auth, WhatsApp, hamburguesa -->
+    <div class="flex items-center gap-1.5 sm:gap-2 md:gap-3">
+      <!-- Widget de Google Translate: oculto en móvil -->
       <div id="google_translate_element" class="hidden md:block"></div>
 
       <!-- Botón de cambio de tema (sol/luna) -->
@@ -58,27 +57,63 @@ import ClientPortal from '@/components/ClientPortal';
       <!-- Portal del cliente: autenticación y chat en tiempo real -->
       <ClientPortal client:load />
 
-      <div class="flex items-center gap-1 md:gap-2">
-        <!-- Botón principal: abre WhatsApp con mensaje predeterminado -->
-        <a
-          href="https://wa.me/51929438206?text=Hello!%20I'm%20visiting%20your%20website%20Autos%20Bas%20Dealer%20Miami%20and%20I'd%20like%20to%20get%20more%20information%20about%20your%20vehicles.%20Thank%20you!"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="inline-flex items-center justify-center gap-2 rounded-full px-6 font-bold shadow-lg shadow-primary/20 hover:scale-105 transition-transform duration-300 bg-primary text-primary-foreground h-10 text-sm"
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-          Contact Us
-        </a>
-        <Button variant="ghost" size="icon" className="lg:hidden rounded-full">
-          <Menu size={24} />
-        </Button>
-      </div>
+      <!-- Botón WhatsApp: solo icono en móvil, con texto en sm+ -->
+      <a
+        href="https://wa.me/51929438206?text=Hello!%20I'm%20visiting%20your%20website%20Autos%20Bas%20Dealer%20Miami%20and%20I'd%20like%20to%20get%20more%20information%20about%20your%20vehicles.%20Thank%20you!"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="inline-flex items-center justify-center gap-2 rounded-full px-3 sm:px-6 font-bold shadow-lg shadow-primary/20 hover:scale-105 transition-transform duration-300 bg-primary text-primary-foreground h-9 sm:h-10 text-sm"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        <span class="hidden sm:inline">Contact Us</span>
+      </a>
+
+      <!-- Botón hamburguesa: abre/cierra menú móvil, visible solo en < lg -->
+      <button
+        id="mobile-menu-toggle"
+        class="lg:hidden p-2 rounded-full hover:bg-muted transition-colors text-foreground/70"
+        aria-label="Toggle mobile menu"
+        aria-expanded="false"
+        aria-controls="mobile-menu"
+      >
+        <span id="icon-menu"><Menu size={24} /></span>
+        <span id="icon-close" style="display:none;"><X size={24} /></span>
+      </button>
     </div>
   </div>
+
+  <!-- Menú móvil desplegable: panel con enlaces, traductor y accesos rápidos -->
+  <nav
+    id="mobile-menu"
+    class="lg:hidden absolute top-full left-0 right-0 bg-background/95 backdrop-blur-md border-b border-border/40 shadow-xl overflow-hidden transition-all duration-300 ease-out"
+    style="max-height: 0; opacity: 0;"
+  >
+    <div class="container mx-auto px-4 py-6 flex flex-col gap-2">
+      <!-- Enlaces de navegación -->
+      <a href="#" class="mobile-nav-link flex items-center gap-3 px-4 py-3 rounded-xl text-foreground/80 hover:bg-primary/10 hover:text-primary transition-all font-medium">
+        Home
+      </a>
+      {['Inventory', 'About Us', 'Contact'].map((item) => (
+        <a
+          href={`#${item.toLowerCase().replace(' ', '-')}`}
+          class="mobile-nav-link flex items-center gap-3 px-4 py-3 rounded-xl text-foreground/80 hover:bg-primary/10 hover:text-primary transition-all font-medium"
+        >
+          {item}
+        </a>
+      ))}
+
+      <!-- Traductor en móvil: visible solo cuando el menú está abierto -->
+      <div class="md:hidden pt-4 mt-2 border-t border-border/40 px-4">
+        <p class="text-[10px] uppercase tracking-widest font-black text-muted-foreground mb-2">Language</p>
+        <div id="google_translate_element_mobile"></div>
+      </div>
+    </div>
+  </nav>
 </header>
 
-<!-- Script para alternar tema claro/oscuro, persistir preferencia y mostrar solo el icono activo -->
+<!-- Script para alternar tema claro/oscuro, menú móvil y persistir preferencia -->
 <script>
+  /* ─── Tema claro/oscuro ─── */
   function updateThemeIcons() {
     const isDark = document.documentElement.classList.contains('dark');
     const sun = document.getElementById('icon-sun');
@@ -93,12 +128,48 @@ import ClientPortal from '@/components/ClientPortal';
   const toggle = document.getElementById('theme-toggle');
   if (toggle) {
     toggle.addEventListener('click', () => {
-      /* Aplica el cambio de tema dentro de requestAnimationFrame para agrupar
-         el re-cálculo de estilos en un solo frame y evitar layout thrashing */
       requestAnimationFrame(() => {
         const isDark = document.documentElement.classList.toggle('dark');
         localStorage.setItem('theme', isDark ? 'dark' : 'light');
         updateThemeIcons();
+      });
+    });
+  }
+
+  /* ─── Menú móvil: abre/cierra con animación suave ─── */
+  const menuToggle = document.getElementById('mobile-menu-toggle');
+  const mobileMenu = document.getElementById('mobile-menu');
+  const iconMenu = document.getElementById('icon-menu');
+  const iconClose = document.getElementById('icon-close');
+
+  if (menuToggle && mobileMenu && iconMenu && iconClose) {
+    let isMenuOpen = false;
+
+    menuToggle.addEventListener('click', () => {
+      isMenuOpen = !isMenuOpen;
+      menuToggle.setAttribute('aria-expanded', String(isMenuOpen));
+
+      if (isMenuOpen) {
+        mobileMenu.style.maxHeight = mobileMenu.scrollHeight + 'px';
+        mobileMenu.style.opacity = '1';
+      } else {
+        mobileMenu.style.maxHeight = '0';
+        mobileMenu.style.opacity = '0';
+      }
+
+      iconMenu.style.display = isMenuOpen ? 'none' : 'block';
+      iconClose.style.display = isMenuOpen ? 'block' : 'none';
+    });
+
+    /* Cierra el menú al hacer clic en un enlace de navegación */
+    mobileMenu.querySelectorAll('.mobile-nav-link').forEach((link) => {
+      link.addEventListener('click', () => {
+        isMenuOpen = false;
+        menuToggle.setAttribute('aria-expanded', 'false');
+        mobileMenu.style.maxHeight = '0';
+        mobileMenu.style.opacity = '0';
+        iconMenu.style.display = 'block';
+        iconClose.style.display = 'none';
       });
     });
   }

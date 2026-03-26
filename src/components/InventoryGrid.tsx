@@ -74,8 +74,8 @@ export default function InventoryGrid({ cars }: InventoryGridProps) {
         />
       </div>
 
-      {/* Carrusel con los vehículos filtrados */}
-      <div className="px-8 md:px-12">
+      {/* Carrusel con los vehículos filtrados: padding lateral adaptativo */}
+      <div className="px-0 sm:px-8 md:px-12">
         <InventoryCarousel cars={carsFiltrados} />
       </div>
     </>

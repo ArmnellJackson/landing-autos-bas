@@ -107,9 +107,9 @@ const WhatsAppIcon = <svg xmlns="http://www.w3.org/2000/svg" width="16" height="
    no cuando el carrusel actualiza su estado de navegación. */
 const VehicleCard = React.memo(function VehicleCard({ data }: { data: CardData }) {
   return (
-    <div className="group overflow-hidden border-none shadow-xl hover:shadow-2xl transition-all duration-500 bg-background rounded-3xl h-full flex flex-col">
-      {/* Imagen del vehículo con altura fija */}
-      <div className="p-0 relative h-56 overflow-hidden shrink-0">
+    <div className="group overflow-hidden border-none shadow-xl hover:shadow-2xl transition-all duration-500 bg-background rounded-2xl sm:rounded-3xl h-full flex flex-col">
+      {/* Imagen del vehículo con altura adaptativa */}
+      <div className="p-0 relative h-48 sm:h-56 overflow-hidden shrink-0">
         <div className="absolute top-4 left-4 z-20">
           <span className="inline-flex items-center bg-primary/90 text-white font-bold px-3 py-1 rounded-lg backdrop-blur-sm text-xs">
             {data.carroceria}
@@ -125,7 +125,7 @@ const VehicleCard = React.memo(function VehicleCard({ data }: { data: CardData }
       </div>
 
       {/* Contenido con flex-grow para ocupar el espacio restante */}
-      <div className="p-6 flex-1 flex flex-col">
+      <div className="p-4 sm:p-6 flex-1 flex flex-col">
         <div className="flex justify-between items-start mb-1">
           <h3 className="text-lg font-black uppercase tracking-tight group-hover:text-primary transition-colors leading-tight">
             {data.nombre}
@@ -169,7 +169,7 @@ const VehicleCard = React.memo(function VehicleCard({ data }: { data: CardData }
       </div>
 
       {/* Botón de WhatsApp fijado al fondo */}
-      <div className="p-6 pt-0 mt-auto shrink-0">
+      <div className="p-4 sm:p-6 pt-0 mt-auto shrink-0">
         <a
           href={data.whatsappUrl}
           target="_blank"
@@ -205,11 +205,11 @@ export default function InventoryCarousel({ cars }: InventoryCarouselProps) {
       opts={{ align: 'start', loop: true }}
       className="w-full"
     >
-      <CarouselContent className="-ml-6">
+      <CarouselContent className="-ml-4 sm:-ml-6">
         {cardsData.map((data) => (
           <CarouselItem
             key={data.id}
-            className="pl-6 basis-full md:basis-1/2 lg:basis-1/3"
+            className="pl-4 sm:pl-6 basis-[85%] sm:basis-full md:basis-1/2 lg:basis-1/3"
           >
             <VehicleCard data={data} />
           </CarouselItem>
