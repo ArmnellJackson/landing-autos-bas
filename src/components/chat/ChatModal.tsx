@@ -107,6 +107,13 @@ export default function ChatModal({ isOpen, onClose, userId, userName }: ChatMod
     };
   }, [isOpen, userId]);
 
+  /* Foco automático en el input cuando el chat termina de cargar */
+  useEffect(() => {
+    if (!loading && isOpen) {
+      setTimeout(() => inputRef.current?.focus(), 50);
+    }
+  }, [loading, isOpen]);
+
   /* Scroll automático cuando llegan nuevos mensajes */
   useEffect(() => {
     scrollToBottom();
@@ -361,7 +368,6 @@ export default function ChatModal({ isOpen, onClose, userId, userName }: ChatMod
               onChange={(e) => setInputValue(e.target.value)}
               placeholder="Escribe un mensaje..."
               className="flex-1 h-10 rounded-full border border-input bg-transparent px-4 text-sm outline-none placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring/30 dark:bg-input/30"
-              disabled={sending}
             />
             <button
               type="submit"
