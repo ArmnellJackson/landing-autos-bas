@@ -1,10 +1,9 @@
 ---
 /* Sección de inventario: consulta la tabla 'inventario' de Supabase con sus imágenes
-   y renderiza un carrusel de tarjetas dinámicas con botón de WhatsApp contextual. */
+   y renderiza filtros dinámicos + carrusel de tarjetas con botón de WhatsApp contextual. */
 import { Badge } from '@/components/ui/badge';
 import { supabase } from '@/lib/supabase';
-import InventoryCarousel from '@/components/InventoryCarousel';
-import SearchFilters from '@/components/SearchFilters';
+import InventoryGrid from '@/components/InventoryGrid';
 
 /* Tipado para los registros de inventario con sus imágenes asociadas */
 interface InventarioImagen {
@@ -68,14 +67,7 @@ const anios = [...new Set(cars.map(c => c.anio))].sort((a, b) => b - a);
       </p>
     </div>
 
-    <!-- Filtros dinámicos: marcas y años extraídos del inventario -->
-    <div class="mb-10">
-      <SearchFilters client:load marcas={marcas} anios={anios} />
-    </div>
-
-    <!-- Carrusel de vehículos: componente React con hidratación client-side -->
-    <div class="px-8 md:px-12">
-      <InventoryCarousel client:load cars={cars} />
-    </div>
+    <!-- Filtros + carrusel: componente React con estado compartido para filtrado dinámico -->
+    <InventoryGrid client:load cars={cars} marcas={marcas} anios={anios} />
   </div>
 </section>
