@@ -32,8 +32,39 @@ const { title, description = "Autos Bas Dealer Miami - Premium luxury car sales 
 			})();
 		</script>
 
-		<!-- Google Translate Element: carga el widget de traducción automática -->
+		<!-- Google Translate Element: carga el widget y renombra opciones a abreviaturas nativas -->
 		<script is:inline>
+			/* Mapa de códigos de idioma a abreviaturas cortas en su idioma nativo */
+			var gtLangMap = {
+				'en':'En','es':'Es','fr':'Fr','de':'De','it':'It','pt':'Pt',
+				'nl':'Nl','pl':'Pl','ro':'Ro','sv':'Sv','da':'Da','no':'No',
+				'fi':'Fi','el':'El','hu':'Hu','cs':'Cs','bg':'Bg','hr':'Hr',
+				'sk':'Sk','sl':'Sl'
+			};
+			var gtLangNames = {
+				'en':'English','es':'Español','fr':'Français','de':'Deutsch',
+				'it':'Italiano','pt':'Português','nl':'Nederlands','pl':'Polski',
+				'ro':'Română','sv':'Svenska','da':'Dansk','no':'Norsk',
+				'fi':'Suomi','el':'Ελληνικά','hu':'Magyar','cs':'Čeština',
+				'bg':'Български','hr':'Hrvatski','sk':'Slovenčina','sl':'Slovenščina'
+			};
+
+			/* Renombra las opciones del select de Google Translate a abreviaturas nativas */
+			function renombrarOpciones() {
+				var combo = document.querySelector('.goog-te-combo');
+				if (!combo) return false;
+				var opts = combo.options;
+				for (var i = 0; i < opts.length; i++) {
+					var val = opts[i].value;
+					if (val && gtLangNames[val]) {
+						opts[i].text = gtLangNames[val];
+					} else if (val === '') {
+						opts[i].text = 'Language';
+					}
+				}
+				return true;
+			}
+
 			function googleTranslateElementInit() {
 				new google.translate.TranslateElement({
 					pageLanguage: 'en',
@@ -41,6 +72,13 @@ const { title, description = "Autos Bas Dealer Miami - Premium luxury car sales 
 					layout: google.translate.TranslateElement.InlineLayout.HORIZONTAL,
 					autoDisplay: false
 				}, 'google_translate_element');
+
+				/* Espera a que el select se renderice y renombra las opciones */
+				var intentos = 0;
+				var intervalo = setInterval(function() {
+					if (renombrarOpciones() || intentos > 20) clearInterval(intervalo);
+					intentos++;
+				}, 200);
 			}
 		</script>
 		<script is:inline src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
@@ -93,6 +131,12 @@ const { title, description = "Autos Bas Dealer Miami - Premium luxury car sales 
 	}
 	:global(.dark .goog-te-combo) {
 		border-color: oklch(1 0 0 / 12%);
+		color: oklch(0.95 0 0) !important;
+		background-color: oklch(0.15 0 0) !important;
+	}
+	/* Opciones del dropdown visibles en dark mode con fondo oscuro y texto claro */
+	:global(.dark .goog-te-combo option) {
+		background-color: oklch(0.15 0 0) !important;
 		color: oklch(0.95 0 0) !important;
 	}
 	/* Oculta la barra de traducción que aparece al traducir la página */
