@@ -78,6 +78,7 @@ const { title, description = "Autos Bas Dealer Miami - Premium luxury car sales 
 	:global(.goog-te-gadget a) {
 		display: none !important;
 	}
+	/* Estilos del selector de idioma con color explícito para ambos temas */
 	:global(.goog-te-combo) {
 		display: inline-block !important;
 		font-size: 12px !important;
@@ -85,14 +86,14 @@ const { title, description = "Autos Bas Dealer Miami - Premium luxury car sales 
 		border-radius: 8px;
 		border: 1px solid oklch(0.90 0 0);
 		background: transparent;
-		color: inherit;
+		color: oklch(0.145 0 0) !important;
 		font-family: 'Geist Variable', sans-serif;
 		font-weight: 600;
 		cursor: pointer;
 	}
 	:global(.dark .goog-te-combo) {
 		border-color: oklch(1 0 0 / 12%);
-		color: oklch(0.95 0 0);
+		color: oklch(0.95 0 0) !important;
 	}
 	/* Oculta la barra de traducción que aparece al traducir la página */
 	:global(.skiptranslate) {
