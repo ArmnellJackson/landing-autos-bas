@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { supabase } from '@/lib/supabase';
 import InventoryCarousel from '@/components/InventoryCarousel';
+import SearchFilters from '@/components/SearchFilters';
 
 /* Tipado para los registros de inventario con sus imágenes asociadas */
 interface InventarioImagen {
@@ -69,6 +70,11 @@ if (supabase) {
         View All Cars
         <ArrowUpRight size={18} class="ml-2 group-hover:rotate-45 transition-transform" />
       </Button>
+    </div>
+
+    <!-- Filtros de búsqueda: marca y año -->
+    <div class="mb-10">
+      <SearchFilters client:load />
     </div>
 
     <!-- Carrusel de vehículos: componente React con hidratación client-side -->
