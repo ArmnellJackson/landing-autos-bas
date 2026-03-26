@@ -1,8 +1,6 @@
 ---
 /* Sección de inventario: consulta la tabla 'inventario' de Supabase con sus imágenes
    y renderiza un carrusel de tarjetas dinámicas con botón de WhatsApp contextual. */
-import { ArrowUpRight } from 'lucide-react';
-import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { supabase } from '@/lib/supabase';
 import InventoryCarousel from '@/components/InventoryCarousel';
@@ -50,31 +48,29 @@ if (supabase) {
 
   cars = (vehiculos as Vehiculo[]) ?? [];
 }
+
+/* Extrae marcas y años únicos del inventario para los filtros dinámicos */
+const marcas = [...new Set(cars.map(c => c.marca.trim()))].sort();
+const anios = [...new Set(cars.map(c => c.anio))].sort((a, b) => b - a);
 ---
 
 <section id="inventory" class="py-24 bg-muted/30">
   <div class="container mx-auto px-4 md:px-6">
-    <!-- Encabezado de la sección con título y botón de acción -->
-    <div class="flex flex-col md:flex-row justify-between items-end gap-6 mb-12">
-      <div class="space-y-4">
-        <Badge variant="outline" class="text-primary border-primary/20 uppercase tracking-widest px-4 py-1 font-bold">Featured Fleet</Badge>
-        <h2 class="text-4xl md:text-5xl font-black text-foreground uppercase tracking-tighter leading-none">
-          EXPLORE OUR <span class="text-primary italic">EXCLUSIVE</span> INVENTORY
-        </h2>
-        <p class="text-muted-foreground max-w-xl font-medium">
-          Choose from our carefully curated selection of high-performance and luxury vehicles
-          available for immediate purchase.
-        </p>
-      </div>
-      <Button variant="outline" className="rounded-full px-8 font-bold border-2 h-12 hover:bg-primary hover:text-white transition-all group">
-        View All Cars
-        <ArrowUpRight size={18} class="ml-2 group-hover:rotate-45 transition-transform" />
-      </Button>
+    <!-- Encabezado de la sección -->
+    <div class="space-y-4 mb-12">
+      <Badge variant="outline" class="text-primary border-primary/20 uppercase tracking-widest px-4 py-1 font-bold">Featured Fleet</Badge>
+      <h2 class="text-4xl md:text-5xl font-black text-foreground uppercase tracking-tighter leading-none">
+        EXPLORE OUR <span class="text-primary italic">EXCLUSIVE</span> INVENTORY
+      </h2>
+      <p class="text-muted-foreground max-w-xl font-medium">
+        Choose from our carefully curated selection of high-performance and luxury vehicles
+        available for immediate purchase.
+      </p>
     </div>
 
-    <!-- Filtros de búsqueda: marca y año -->
+    <!-- Filtros dinámicos: marcas y años extraídos del inventario -->
     <div class="mb-10">
-      <SearchFilters client:load />
+      <SearchFilters client:load marcas={marcas} anios={anios} />
     </div>
 
     <!-- Carrusel de vehículos: componente React con hidratación client-side -->
