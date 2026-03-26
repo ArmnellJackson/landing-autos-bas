@@ -19,7 +19,7 @@ interface SearchFiltersProps {
 export default function SearchFilters({ marcas, anios, onMarcaChange, onAnioChange }: SearchFiltersProps) {
   return (
     <div className="bg-background rounded-3xl shadow-[0_32px_64px_-12px_rgba(0,0,0,0.14)] border border-border/50 p-2 max-w-3xl mx-auto">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-2">
+      <div className="grid grid-cols-2 gap-3 sm:gap-6 p-2">
         {/* Selector de marca: opciones dinámicas desde el inventario */}
         <div className="space-y-2">
           <label className="text-[10px] uppercase tracking-widest font-black text-muted-foreground ml-1">Car Brand</label>
