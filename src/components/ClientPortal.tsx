@@ -1,6 +1,6 @@
 /* Portal del cliente: React island que gestiona el estado de autenticación y renderiza
-   los botones de acceso, el modal de auth y el modal de chat. Se hidrata en el navegador
-   con client:load para mantener la sesión activa durante toda la visita. */
+   los botones de acceso, info del usuario, el modal de auth y el modal de chat.
+   Se hidrata en el navegador con client:load para mantener la sesión activa durante toda la visita. */
 import { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { MessageCircle, User, LogOut, Loader2 } from 'lucide-react';
@@ -72,6 +72,16 @@ export default function ClientPortal() {
     }
   }
 
+  /* Extrae las iniciales del nombre para el avatar */
+  function getInitials(name: string): string {
+    return name
+      .split(' ')
+      .map((w) => w[0])
+      .slice(0, 2)
+      .join('')
+      .toUpperCase();
+  }
+
   return (
     <>
       {/* Botones de acción en el navbar */}
@@ -81,8 +91,18 @@ export default function ClientPortal() {
             <Loader2 size={18} className="animate-spin text-muted-foreground" />
           </div>
         ) : user ? (
-          /* Usuario autenticado: muestra botón de chat y menú de usuario */
+          /* Usuario autenticado: info del usuario, chat y logout */
           <>
+            {/* Info del usuario: avatar con iniciales + nombre (nombre visible en sm+) */}
+            <div className="flex items-center gap-2">
+              <div className="w-8 h-8 rounded-full bg-primary/15 text-primary flex items-center justify-center text-xs font-bold shrink-0">
+                {getInitials(userName || 'U')}
+              </div>
+              <span className="hidden sm:block text-sm font-medium text-foreground/80 max-w-[120px] truncate">
+                {userName}
+              </span>
+            </div>
+
             <button
               onClick={handleChatClick}
               className="relative p-2 rounded-full hover:bg-muted transition-colors text-foreground/70 hover:text-primary"
@@ -142,7 +162,7 @@ export default function ClientPortal() {
           {user && !showChat && (
             <button
               onClick={() => setShowChat(true)}
-              className="fixed bottom-6 right-6 z-50 w-14 h-14 rounded-full bg-primary text-primary-foreground shadow-lg shadow-primary/30 flex items-center justify-center hover:scale-110 transition-transform sm:hidden"
+              className="fixed bottom-12 right-6 z-50 w-14 h-14 rounded-full bg-primary text-primary-foreground shadow-lg shadow-primary/30 flex items-center justify-center hover:scale-110 transition-transform sm:hidden"
               aria-label="Abrir chat"
             >
               <MessageCircle size={24} />
