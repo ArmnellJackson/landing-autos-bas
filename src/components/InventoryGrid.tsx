@@ -65,7 +65,7 @@ export default function InventoryGrid({ cars }: InventoryGridProps) {
   return (
     <>
       {/* Filtros con opciones condicionadas cruzadas */}
-      <div className="mb-10">
+      <div className="mb-5">
         <SearchFilters
           marcas={marcasDisponibles}
           anios={aniosDisponibles}
