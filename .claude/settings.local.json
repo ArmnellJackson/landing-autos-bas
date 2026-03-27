@@ -10,7 +10,8 @@
       "Bash(npx astro:*)",
       "mcp__supabase__apply_migration",
       "Bash(pnpm add:*)",
-      "mcp__supabase__get_logs"
+      "mcp__supabase__get_logs",
+      "Bash(cd:*)"
     ]
   },
   "enableAllProjectMcpServers": true,

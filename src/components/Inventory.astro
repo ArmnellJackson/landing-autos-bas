@@ -1,7 +1,6 @@
 ---
 /* Sección de inventario: consulta la tabla 'inventario' de Supabase con sus imágenes
-   y renderiza filtros dinámicos + carrusel de tarjetas con botón de WhatsApp contextual. */
-import { Badge } from '@/components/ui/badge';
+   y renderiza filtros dinámicos + grilla vertical de tarjetas con botón de WhatsApp contextual. */
 import { supabase } from '@/lib/supabase';
 import InventoryGrid from '@/components/InventoryGrid';
 
@@ -53,21 +52,9 @@ const marcas = [...new Set(cars.map(c => c.marca.trim()))].sort();
 const anios = [...new Set(cars.map(c => c.anio))].sort((a, b) => b - a);
 ---
 
-<section id="inventory" class="py-12 sm:py-16 lg:py-24 bg-muted/30">
+<section id="inventory" class="pt-24 sm:pt-28 lg:pt-32 pb-12 sm:pb-16 lg:pb-24 bg-muted/30">
   <div class="container mx-auto px-4 md:px-6">
-    <!-- Encabezado de la sección con tipografía adaptativa -->
-    <div class="space-y-3 sm:space-y-4 mb-8 sm:mb-12">
-      <Badge variant="outline" class="text-primary border-primary/20 uppercase tracking-widest px-4 py-1 font-bold">Featured Fleet</Badge>
-      <h2 class="text-3xl sm:text-4xl md:text-5xl font-black text-foreground uppercase tracking-tighter leading-none">
-        EXPLORE OUR <span class="text-primary italic">EXCLUSIVE</span> INVENTORY
-      </h2>
-      <p class="text-muted-foreground max-w-xl font-medium text-sm sm:text-base">
-        Choose from our carefully curated selection of high-performance and luxury vehicles
-        available for immediate purchase.
-      </p>
-    </div>
-
-    <!-- Filtros + carrusel: componente React con estado compartido para filtrado dinámico -->
+    <!-- Filtros + grilla vertical: componente React con estado compartido para filtrado dinámico -->
     <InventoryGrid client:load cars={cars} marcas={marcas} anios={anios} />
   </div>
 </section>

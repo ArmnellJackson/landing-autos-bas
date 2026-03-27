@@ -1,14 +1,6 @@
-/* Carrusel de inventario: muestra las tarjetas de vehículos en un carrusel horizontal
-   usando Embla via shadcn/ui. Cards memoizadas para evitar re-renders costosos
-   en cada navegación del carrusel. */
+/* Grilla de inventario: muestra las tarjetas de vehículos en una grilla vertical responsive.
+   Cards memoizadas para evitar re-renders costosos al cambiar filtros. */
 import React, { useMemo } from 'react';
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselPrevious,
-  CarouselNext,
-} from '@/components/ui/carousel';
 
 /* Tipado para los datos de vehículos que recibe el componente */
 interface InventarioImagen {
@@ -103,8 +95,7 @@ const FuelIcon = <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" 
 
 const WhatsAppIcon = <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>;
 
-/* Tarjeta de vehículo memoizada: solo se re-renderiza si cambian sus props,
-   no cuando el carrusel actualiza su estado de navegación. */
+/* Tarjeta de vehículo memoizada: solo se re-renderiza si cambian sus props */
 const VehicleCard = React.memo(function VehicleCard({ data }: { data: CardData }) {
   return (
     <div className="group overflow-hidden border-none shadow-xl hover:shadow-2xl transition-all duration-500 bg-background rounded-2xl sm:rounded-3xl h-full flex flex-col">
@@ -184,9 +175,9 @@ const VehicleCard = React.memo(function VehicleCard({ data }: { data: CardData }
   );
 });
 
-/* Componente principal: carrusel horizontal con tarjetas de vehículos de altura uniforme */
+/* Componente principal: grilla vertical responsive de tarjetas de vehículos */
 export default function InventoryCarousel({ cars }: InventoryCarouselProps) {
-  /* Pre-computa todos los datos una sola vez, no en cada render del carrusel */
+  /* Pre-computa todos los datos una sola vez, no en cada render */
   const cardsData = useMemo(() => cars.map(prepararCardData), [cars]);
 
   if (cardsData.length === 0) {
@@ -201,24 +192,10 @@ export default function InventoryCarousel({ cars }: InventoryCarouselProps) {
   }
 
   return (
-    <Carousel
-      opts={{ align: 'start', loop: true }}
-      className="w-full"
-    >
-      <CarouselContent className="-ml-4 sm:-ml-6">
-        {cardsData.map((data) => (
-          <CarouselItem
-            key={data.id}
-            className="pl-4 sm:pl-6 basis-[85%] sm:basis-full md:basis-1/2 lg:basis-1/3"
-          >
-            <VehicleCard data={data} />
-          </CarouselItem>
-        ))}
-      </CarouselContent>
-
-      {/* Botones de navegación con estilos simplificados */}
-      <CarouselPrevious className="hidden md:inline-flex -left-4 lg:-left-6 size-10 bg-background/80 backdrop-blur-sm border-primary/20 hover:bg-primary hover:text-white" />
-      <CarouselNext className="hidden md:inline-flex -right-4 lg:-right-6 size-10 bg-background/80 backdrop-blur-sm border-primary/20 hover:bg-primary hover:text-white" />
-    </Carousel>
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+      {cardsData.map((data) => (
+        <VehicleCard key={data.id} data={data} />
+      ))}
+    </div>
   );
 }
