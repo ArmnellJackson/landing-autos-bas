@@ -52,7 +52,7 @@ const marcas = [...new Set(cars.map(c => c.marca.trim()))].sort();
 const anios = [...new Set(cars.map(c => c.anio))].sort((a, b) => b - a);
 ---
 
-<section id="inventory" class="pt-20 sm:pt-24 lg:pt-24 pb-12 sm:pb-16 lg:pb-24 bg-muted/30">
+<section id="inventory" class="pt-20 sm:pt-20 lg:pt-20 pb-12 sm:pb-16 lg:pb-24 bg-muted/30">
   <div class="container mx-auto px-4 md:px-6">
     <!-- Filtros + grilla vertical: componente React con estado compartido para filtrado dinámico -->
     <InventoryGrid client:load cars={cars} marcas={marcas} anios={anios} />
