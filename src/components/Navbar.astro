@@ -23,8 +23,9 @@ import ClientPortal from '@/components/ClientPortal';
         <span id="icon-close" style="display:none;"><X size={22} /></span>
       </button>
 
-      <!-- Elementos visibles en desktop: tema y auth/chat -->
+      <!-- Elementos visibles en desktop: auth/chat primero, luego tema -->
       <div class="hidden sm:flex items-center gap-2 md:gap-3">
+        <ClientPortal client:load variant="desktop" />
         <button
           id="theme-toggle"
           class="p-2 rounded-full hover:bg-muted transition-colors text-foreground/70 hover:text-primary"
@@ -33,7 +34,6 @@ import ClientPortal from '@/components/ClientPortal';
           <span id="icon-sun"><Sun size={20} /></span>
           <span id="icon-moon" style="display:none;"><Moon size={20} /></span>
         </button>
-        <ClientPortal client:load variant="desktop" />
       </div>
     </div>
 

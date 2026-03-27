@@ -2,9 +2,9 @@
    los botones de acceso, info del usuario, el modal de auth y el modal de chat.
    Soporta dos variantes: 'desktop' (compacta, en línea) y 'mobile' (expandida, en columna).
    Se hidrata en el navegador con client:load para mantener la sesión activa. */
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
-import { MessageCircle, User, LogOut, Loader2 } from 'lucide-react';
+import { MessageCircle, User, LogOut, Loader2, ChevronDown } from 'lucide-react';
 import { Toaster, toast } from 'sonner';
 import { getSupabaseBrowserClient } from '@/lib/supabase-browser';
 import AuthModal from '@/components/auth/AuthModal';
@@ -22,7 +22,9 @@ export default function ClientPortal({ variant = 'desktop' }: ClientPortalProps)
   const [checking, setChecking] = useState(true);
   const [showAuth, setShowAuth] = useState(false);
   const [showChat, setShowChat] = useState(false);
+  const [showDropdown, setShowDropdown] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
   const supabase = getSupabaseBrowserClient();
 
@@ -56,6 +58,19 @@ export default function ClientPortal({ variant = 'desktop' }: ClientPortalProps)
 
     return () => subscription.unsubscribe();
   }, []);
+
+  /* Cierra el dropdown al hacer click fuera */
+  useEffect(() => {
+    function handleClickOutside(e: MouseEvent) {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
+        setShowDropdown(false);
+      }
+    }
+    if (showDropdown) {
+      document.addEventListener('click', handleClickOutside);
+    }
+    return () => document.removeEventListener('click', handleClickOutside);
+  }, [showDropdown]);
 
   /* Cierra sesión y limpia el estado */
   async function handleLogout() {
@@ -189,7 +204,7 @@ export default function ClientPortal({ variant = 'desktop' }: ClientPortalProps)
     );
   }
 
-  /* ─── Variante desktop: layout compacto en línea ─── */
+  /* ─── Variante desktop: avatar con dropdown + chat ─── */
   return (
     <div className="flex items-center gap-1.5">
       {checking ? (
@@ -198,16 +213,46 @@ export default function ClientPortal({ variant = 'desktop' }: ClientPortalProps)
         </div>
       ) : user ? (
         <>
-          {/* Info del usuario: avatar + nombre */}
-          <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-full bg-primary/15 text-primary flex items-center justify-center text-xs font-bold shrink-0">
-              {getInitials(displayName)}
-            </div>
-            <span className="text-sm font-medium text-foreground/80 max-w-[120px] truncate">
-              {displayName}
-            </span>
+          {/* Avatar con dropdown de info y logout */}
+          <div className="relative" ref={dropdownRef}>
+            <button
+              onClick={() => setShowDropdown(!showDropdown)}
+              className="flex items-center gap-1.5 p-1 pr-2 rounded-full hover:bg-muted transition-colors"
+              title="Mi cuenta"
+            >
+              <div className="w-8 h-8 rounded-full bg-primary/15 text-primary flex items-center justify-center text-xs font-bold shrink-0">
+                {getInitials(displayName)}
+              </div>
+              <ChevronDown size={14} className={`text-muted-foreground transition-transform duration-200 ${showDropdown ? 'rotate-180' : ''}`} />
+            </button>
+
+            {/* Dropdown con info del usuario y cerrar sesión */}
+            {showDropdown && (
+              <div className="absolute top-full left-0 mt-2 w-64 bg-background border border-border/60 rounded-xl shadow-xl py-3 px-4 z-50">
+                <div className="flex flex-col gap-1 mb-3">
+                  <span className="text-sm font-semibold text-foreground truncate">
+                    {userName || 'Usuario'}
+                  </span>
+                  {userEmail && (
+                    <span className="text-xs text-muted-foreground truncate">
+                      {userEmail}
+                    </span>
+                  )}
+                </div>
+                <div className="border-t border-border/40 pt-2">
+                  <button
+                    onClick={() => { handleLogout(); setShowDropdown(false); }}
+                    className="flex items-center gap-2 w-full px-2 py-2 rounded-lg text-sm font-medium text-foreground/70 hover:bg-destructive/10 hover:text-destructive transition-colors"
+                  >
+                    <LogOut size={16} />
+                    Cerrar sesión
+                  </button>
+                </div>
+              </div>
+            )}
           </div>
 
+          {/* Chat: después del avatar */}
           <button
             onClick={handleChatClick}
             className="relative p-2 rounded-full hover:bg-muted transition-colors text-foreground/70 hover:text-primary"
@@ -215,15 +260,9 @@ export default function ClientPortal({ variant = 'desktop' }: ClientPortalProps)
           >
             <MessageCircle size={20} />
           </button>
-          <button
-            onClick={handleLogout}
-            className="p-2 rounded-full hover:bg-muted transition-colors text-foreground/70 hover:text-destructive"
-            title="Cerrar sesión"
-          >
-            <LogOut size={18} />
-          </button>
         </>
       ) : (
+        /* Sign In: va primero (antes del tema que está en el Navbar) */
         <button
           onClick={() => setShowAuth(true)}
           className="inline-flex items-center gap-1.5 rounded-full px-4 h-9 text-sm font-medium border border-border hover:bg-muted transition-colors text-foreground/80 hover:text-foreground"
@@ -231,6 +270,34 @@ export default function ClientPortal({ variant = 'desktop' }: ClientPortalProps)
           <User size={16} />
           Sign In
         </button>
+      )}
+
+      {/* Modales renderizados en el body via createPortal */}
+      {mounted && createPortal(
+        <>
+          <Toaster
+            position="top-right"
+            toastOptions={{ className: 'bg-card text-foreground border-border' }}
+            richColors
+            style={{ zIndex: 70 }}
+          />
+
+          <AuthModal
+            isOpen={showAuth}
+            onClose={() => setShowAuth(false)}
+            onAuthSuccess={handleAuthSuccess}
+          />
+
+          {user && (
+            <ChatModal
+              isOpen={showChat}
+              onClose={() => setShowChat(false)}
+              userId={user.id}
+              userName={displayName}
+            />
+          )}
+        </>,
+        document.body
       )}
     </div>
   );
