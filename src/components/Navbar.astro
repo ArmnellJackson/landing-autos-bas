@@ -1,6 +1,7 @@
 ---
 /* Barra de navegación fija responsive: logo centrado, acciones secundarias (tema, auth/chat)
-   a la izquierda (colapsadas en hamburguesa en móvil) y WhatsApp fijo a la derecha. */
+   a la izquierda (colapsadas en hamburguesa en móvil) y WhatsApp fijo a la derecha.
+   El menú móvil se cierra al pulsar fuera de él. */
 import { Menu, X, Sun, Moon } from 'lucide-react';
 import ClientPortal from '@/components/ClientPortal';
 ---
@@ -32,7 +33,7 @@ import ClientPortal from '@/components/ClientPortal';
           <span id="icon-sun"><Sun size={20} /></span>
           <span id="icon-moon" style="display:none;"><Moon size={20} /></span>
         </button>
-        <ClientPortal client:load />
+        <ClientPortal client:load variant="desktop" />
       </div>
     </div>
 
@@ -61,14 +62,20 @@ import ClientPortal from '@/components/ClientPortal';
     </div>
   </div>
 
-  <!-- Menú móvil desplegable: tema y auth/chat -->
+  <!-- Menú móvil desplegable: chat, info usuario, tema (en columna) -->
   <nav
     id="mobile-menu"
     class="sm:hidden absolute top-full left-0 right-0 bg-background/95 backdrop-blur-md border-b border-border/40 shadow-xl overflow-hidden transition-all duration-300 ease-out"
     style="max-height: 0; opacity: 0;"
   >
-    <div class="container mx-auto px-4 py-4 flex flex-col gap-3">
-      <!-- Tema claro/oscuro -->
+    <div class="container mx-auto px-4 py-4 flex flex-col gap-1">
+      <!-- Auth/Chat en móvil (chat primero, luego info usuario) -->
+      <ClientPortal client:load variant="mobile" />
+
+      <!-- Separador visual -->
+      <div class="border-t border-border/40 my-1"></div>
+
+      <!-- Tema claro/oscuro: último elemento -->
       <button
         id="theme-toggle-mobile"
         class="flex items-center gap-3 px-4 py-3 rounded-xl text-foreground/80 hover:bg-primary/10 hover:text-primary transition-all font-medium w-full text-left"
@@ -77,16 +84,11 @@ import ClientPortal from '@/components/ClientPortal';
         <span id="icon-moon-mobile" style="display:none;"><Moon size={18} /></span>
         <span id="theme-label">Light Mode</span>
       </button>
-
-      <!-- Auth/Chat en móvil -->
-      <div class="px-4 py-2">
-        <ClientPortal client:load />
-      </div>
     </div>
   </nav>
 </header>
 
-<!-- Script para tema claro/oscuro y menú hamburguesa móvil -->
+<!-- Script para tema claro/oscuro, menú hamburguesa y cierre al pulsar fuera -->
 <script>
   /* ─── Tema claro/oscuro: sincroniza ambos botones (desktop y móvil) ─── */
   function updateThemeIcons() {
@@ -125,7 +127,7 @@ import ClientPortal from '@/components/ClientPortal';
   const toggleMobile = document.getElementById('theme-toggle-mobile');
   if (toggleMobile) toggleMobile.addEventListener('click', toggleTheme);
 
-  /* ─── Menú hamburguesa móvil ─── */
+  /* ─── Menú hamburguesa móvil con cierre al pulsar fuera ─── */
   const menuToggle = document.getElementById('mobile-menu-toggle');
   const mobileMenu = document.getElementById('mobile-menu');
   const iconMenu = document.getElementById('icon-menu');
@@ -134,8 +136,9 @@ import ClientPortal from '@/components/ClientPortal';
   if (menuToggle && mobileMenu && iconMenu && iconClose) {
     let isMenuOpen = false;
 
-    menuToggle.addEventListener('click', () => {
-      isMenuOpen = !isMenuOpen;
+    /* Abre o cierra el menú */
+    function setMenuOpen(open: boolean) {
+      isMenuOpen = open;
       menuToggle.setAttribute('aria-expanded', String(isMenuOpen));
 
       if (isMenuOpen) {
@@ -148,6 +151,21 @@ import ClientPortal from '@/components/ClientPortal';
 
       iconMenu.style.display = isMenuOpen ? 'none' : 'block';
       iconClose.style.display = isMenuOpen ? 'block' : 'none';
+    }
+
+    /* Toggle al pulsar el botón hamburguesa */
+    menuToggle.addEventListener('click', (e) => {
+      e.stopPropagation();
+      setMenuOpen(!isMenuOpen);
+    });
+
+    /* Cierra el menú al pulsar cualquier lugar fuera del menú y del botón */
+    document.addEventListener('click', (e) => {
+      if (!isMenuOpen) return;
+      const target = e.target as Node;
+      if (!mobileMenu.contains(target) && !menuToggle.contains(target)) {
+        setMenuOpen(false);
+      }
     });
   }
 </script>
