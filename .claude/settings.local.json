@@ -15,7 +15,9 @@
       "Bash(xargs grep:*)",
       "Bash(node -e \"const m = require\\(''motion''\\); console.log\\(''PanInfo'' in m\\)\")",
       "Bash(node -e \"import\\(''motion''\\).then\\(m => console.log\\(Object.keys\\(m\\).filter\\(k => k.includes\\(''Pan''\\)\\)\\)\\)\")",
-      "Bash(grep -r PanInfo node_modules/motion/ --include=*.d.mts -l)"
+      "Bash(grep -r PanInfo node_modules/motion/ --include=*.d.mts -l)",
+      "Bash(find /c/Users/armne/OneDrive/Escritorio/proyectos/AutosBasDealerMiami/landing-autos-bas/src/pages -type f -name *.astro)",
+      "Bash(pnpm install:*)"
     ]
   },
   "enableAllProjectMcpServers": true,
