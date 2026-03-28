@@ -1,7 +1,9 @@
 /* Grilla de inventario: muestra las tarjetas de vehículos en una grilla vertical responsive.
-   Cada card muestra imagen, marca, modelo, año y carrocería (etiqueta).
+   Cada card incluye un carrusel draggable con todas las imágenes del vehículo,
+   además de marca, modelo, año y etiqueta de carrocería.
    Cards memoizadas para evitar re-renders costosos al cambiar filtros. */
 import React, { useMemo } from 'react';
+import Carousel, { type CarouselItem } from './Carousel';
 
 /* Tipado para los datos de vehículos que recibe el componente */
 interface InventarioImagen {
@@ -32,21 +34,33 @@ interface InventoryCarouselProps {
 interface CardData {
   id: string;
   nombre: string;
-  imagenUrl: string;
+  imagenes: CarouselItem[];
   anio: number;
   carroceria: string;
 }
 
-/* Pre-computa los datos visibles de un vehículo para la card */
+/* Pre-computa los datos visibles de un vehículo para la card, incluyendo todas las imágenes */
 function prepararCardData(car: Vehiculo): CardData {
   const nombre = `${car.marca.trim()} ${car.modelo.trim()}`;
   const sorted = [...car.inventario_imagenes].sort((a, b) => a.orden - b.orden);
-  const imagen = sorted.find((img) => !img.url.endsWith('.mp4'));
+  /* Filtra videos y construye items de carrusel con cada imagen */
+  const imagenes: CarouselItem[] = sorted
+    .filter((img) => !img.url.endsWith('.mp4'))
+    .map((img, idx) => ({
+      id: idx + 1,
+      image: img.url,
+      alt: `${nombre} - foto ${idx + 1}`,
+    }));
+
+  /* Si no hay imágenes, usa placeholder */
+  if (imagenes.length === 0) {
+    imagenes.push({ id: 1, image: '/placeholder-car.jpg', alt: nombre });
+  }
 
   return {
     id: car.id,
     nombre,
-    imagenUrl: imagen?.url ?? '/placeholder-car.jpg',
+    imagenes,
     anio: car.anio,
     carroceria: car.carroceria ?? 'Auto',
   };
@@ -55,24 +69,29 @@ function prepararCardData(car: Vehiculo): CardData {
 /* Icono de auto para el estado vacío */
 const CarIcon = <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-muted-foreground"><path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2"/><circle cx="7" cy="17" r="2"/><path d="M9 17h6"/><circle cx="17" cy="17" r="2"/></svg>;
 
-/* Tarjeta de vehículo memoizada: muestra imagen, etiqueta de carrocería, marca+modelo y año */
+/* Tarjeta de vehículo memoizada: carrusel de imágenes, etiqueta de carrocería, marca+modelo y año */
 const VehicleCard = React.memo(function VehicleCard({ data }: { data: CardData }) {
   return (
     <div className="group overflow-hidden border-none shadow-xl hover:shadow-2xl transition-all duration-500 bg-background rounded-2xl sm:rounded-3xl h-full flex flex-col">
-      {/* Imagen del vehículo con etiqueta de carrocería */}
-      <div className="p-0 relative h-48 sm:h-56 overflow-hidden shrink-0">
+      {/* Carrusel de imágenes del vehículo con etiqueta de carrocería superpuesta */}
+      <div className="relative h-48 sm:h-56 overflow-hidden shrink-0">
         <div className="absolute top-4 left-4 z-20">
           <span className="inline-flex items-center bg-primary/90 text-white font-bold px-3 py-1 rounded-lg backdrop-blur-sm text-xs">
             {data.carroceria}
           </span>
         </div>
-        <img
-          src={data.imagenUrl}
-          alt={data.nombre}
-          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-          loading="lazy"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+        {/* Carrusel ocupa todo el contenedor de imagen */}
+        <div className="w-full h-full">
+          <Carousel
+            items={data.imagenes}
+            baseWidth={400}
+            autoplay={false}
+            autoplayDelay={3000}
+            pauseOnHover={true}
+            loop={true}
+            round={false}
+          />
+        </div>
       </div>
 
       {/* Información básica: marca, modelo y año en fila centrada */}

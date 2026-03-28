@@ -12,7 +12,10 @@
       "Bash(pnpm add:*)",
       "mcp__supabase__get_logs",
       "Bash(cd:*)",
-      "Bash(xargs grep:*)"
+      "Bash(xargs grep:*)",
+      "Bash(node -e \"const m = require\\(''motion''\\); console.log\\(''PanInfo'' in m\\)\")",
+      "Bash(node -e \"import\\(''motion''\\).then\\(m => console.log\\(Object.keys\\(m\\).filter\\(k => k.includes\\(''Pan''\\)\\)\\)\\)\")",
+      "Bash(grep -r PanInfo node_modules/motion/ --include=*.d.mts -l)"
     ]
   },
   "enableAllProjectMcpServers": true,
