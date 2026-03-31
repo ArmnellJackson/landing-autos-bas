@@ -149,7 +149,7 @@ function GalleryModal({
     >
       {/* Contenedor del modal: 80% en mobile, max-width en desktop */}
       <div
-        className="relative w-[96%] max-h-[95vh] sm:w-[70%] sm:max-h-[80vh] lg:w-[50%] bg-background rounded-2xl overflow-hidden shadow-2xl flex flex-col"
+        className="relative w-[96%] h-[85vh] sm:w-[70%] sm:h-[80vh] lg:w-[55%] lg:h-[85vh] bg-background rounded-2xl overflow-hidden shadow-2xl flex flex-col"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Botón de cierre en esquina superior derecha */}
@@ -161,8 +161,8 @@ function GalleryModal({
           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
         </button>
 
-        {/* Carrusel de imágenes con aspect-ratio para que no se distorsione */}
-        <div className="w-full aspect-[4/3] relative">
+        {/* Carrusel de imágenes centrado con fondo neutro, ocupa todo el espacio disponible */}
+        <div className="w-full flex-1 relative bg-black/5 dark:bg-white/5 min-h-0">
           <Carousel
             items={data.imagenes}
             baseWidth={400}
