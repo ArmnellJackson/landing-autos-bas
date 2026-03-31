@@ -1,44 +1,27 @@
 ---
-/* Barra de navegación fija responsive: logo centrado, acciones secundarias (tema, auth/chat)
-   a la izquierda (colapsadas en hamburguesa en móvil) y WhatsApp fijo a la derecha.
-   El menú móvil se cierra al pulsar fuera de él. */
-import { Menu, X, Sun, Moon } from 'lucide-react';
+/* Barra de navegación fija responsive: botón de tema a la izquierda, logo centrado
+   con número de contacto copiable, y WhatsApp a la derecha. */
+import { Sun, Moon } from 'lucide-react';
 // import ClientPortal from '@/components/ClientPortal';
 ---
 
 <header class="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border/40 transition-all duration-300 h-16 flex items-center">
   <div class="container mx-auto px-4 md:px-6 flex items-center justify-between">
 
-    <!-- Izquierda: hamburguesa en móvil, elementos visibles en sm+ -->
+    <!-- Izquierda: botón de tema visible siempre -->
     <div class="flex items-center gap-2 sm:gap-3 w-1/4">
-      <!-- Botón hamburguesa: visible solo en móvil -->
       <button
-        id="mobile-menu-toggle"
-        class="sm:hidden p-2 rounded-full hover:bg-muted transition-colors text-foreground/70"
-        aria-label="Toggle menu"
-        aria-expanded="false"
-        aria-controls="mobile-menu"
+        id="theme-toggle"
+        class="p-2 rounded-full hover:bg-muted transition-colors text-foreground/70 hover:text-primary"
+        aria-label="Toggle theme"
       >
-        <span id="icon-menu"><Menu size={22} /></span>
-        <span id="icon-close" style="display:none;"><X size={22} /></span>
+        <span id="icon-sun"><Sun size={20} /></span>
+        <span id="icon-moon" style="display:none;"><Moon size={20} /></span>
       </button>
-
-      <!-- Elementos visibles en desktop: auth/chat primero, luego tema -->
-      <div class="hidden sm:flex items-center gap-2 md:gap-3">
-       <!-- <ClientPortal client:load variant="desktop" /> -->
-        <button
-          id="theme-toggle"
-          class="p-2 rounded-full hover:bg-muted transition-colors text-foreground/70 hover:text-primary"
-          aria-label="Toggle theme"
-        >
-          <span id="icon-sun"><Sun size={20} /></span>
-          <span id="icon-moon" style="display:none;"><Moon size={20} /></span>
-        </button>
-      </div>
     </div>
 
-    <!-- Centro: logo -->
-    <a href="/" class="flex items-center gap-2 group select-none">
+    <!-- Centro: logo con número de contacto. Al pulsar copia el número al portapapeles -->
+    <button id="logo-copy-btn" type="button" class="flex items-center gap-2 group select-none cursor-pointer whitespace-nowrap" aria-label="Copiar número de contacto">
       <div class="flex flex-col leading-none items-center text-center">
         <span class="text-xl sm:text-2xl font-black uppercase tracking-tighter italic">
           <span class="text-primary">Autos </span><span class="text-foreground">Bas</span>
@@ -46,8 +29,11 @@ import { Menu, X, Sun, Moon } from 'lucide-react';
         <span class="text-[9px] sm:text-[10px] text-primary/60 uppercase tracking-[0.25em] font-semibold">
           Dealer Miami
         </span>
+        <span class="text-[10.5px] sm:text-[14px] text-black dark:text-white tracking-wide font-semibold mt-0.5 whitespace-nowrap">
+          Phone: 1 (754) 299-5740
+        </span>
       </div>
-    </a>
+    </button>
 
     <!-- Derecha: WhatsApp -->
     <div class="flex items-center justify-end w-1/4">
@@ -63,53 +49,19 @@ import { Menu, X, Sun, Moon } from 'lucide-react';
     </div>
   </div>
 
-  <!-- Menú móvil desplegable: chat, info usuario, tema (en columna) -->
-  <nav
-    id="mobile-menu"
-    class="sm:hidden absolute top-full left-0 right-0 bg-background/95 backdrop-blur-md border-b border-border/40 shadow-xl overflow-hidden transition-all duration-300 ease-out"
-    style="max-height: 0; opacity: 0;"
-  >
-    <div class="container mx-auto px-4 py-4 flex flex-col gap-1">
-      <!-- Auth/Chat en móvil (chat primero, luego info usuario) -->
-      <!-- <ClientPortal client:load variant="mobile" /> -->
-
-      <!-- Separador visual -->
-      <div class="border-t border-border/40 my-1"></div>
-
-      <!-- Tema claro/oscuro: último elemento -->
-      <button
-        id="theme-toggle-mobile"
-        class="flex items-center gap-3 px-4 py-3 rounded-xl text-foreground/80 hover:bg-primary/10 hover:text-primary transition-all font-medium w-full text-left"
-      >
-        <span id="icon-sun-mobile"><Sun size={18} /></span>
-        <span id="icon-moon-mobile" style="display:none;"><Moon size={18} /></span>
-        <span id="theme-label">Light Mode</span>
-      </button>
-    </div>
-  </nav>
 </header>
 
-<!-- Script para tema claro/oscuro, menú hamburguesa y cierre al pulsar fuera -->
+<!-- Script para tema claro/oscuro y copia de número de contacto -->
 <script>
-  /* ─── Tema claro/oscuro: sincroniza ambos botones (desktop y móvil) ─── */
+  /* ─── Tema claro/oscuro ─── */
   function updateThemeIcons() {
     const isDark = document.documentElement.classList.contains('dark');
     const sun = document.getElementById('icon-sun');
     const moon = document.getElementById('icon-moon');
-    const sunMobile = document.getElementById('icon-sun-mobile');
-    const moonMobile = document.getElementById('icon-moon-mobile');
-    const label = document.getElementById('theme-label');
 
     if (sun && moon) {
       sun.style.display = isDark ? 'none' : 'block';
       moon.style.display = isDark ? 'block' : 'none';
-    }
-    if (sunMobile && moonMobile) {
-      sunMobile.style.display = isDark ? 'none' : 'block';
-      moonMobile.style.display = isDark ? 'block' : 'none';
-    }
-    if (label) {
-      label.textContent = isDark ? 'Dark Mode' : 'Light Mode';
     }
   }
   updateThemeIcons();
@@ -125,48 +77,18 @@ import { Menu, X, Sun, Moon } from 'lucide-react';
   const toggle = document.getElementById('theme-toggle');
   if (toggle) toggle.addEventListener('click', toggleTheme);
 
-  const toggleMobile = document.getElementById('theme-toggle-mobile');
-  if (toggleMobile) toggleMobile.addEventListener('click', toggleTheme);
-
-  /* ─── Menú hamburguesa móvil con cierre al pulsar fuera ─── */
-  const menuToggle = document.getElementById('mobile-menu-toggle');
-  const mobileMenu = document.getElementById('mobile-menu');
-  const iconMenu = document.getElementById('icon-menu');
-  const iconClose = document.getElementById('icon-close');
-
-  if (menuToggle && mobileMenu && iconMenu && iconClose) {
-    let isMenuOpen = false;
-
-    /* Abre o cierra el menú */
-    function setMenuOpen(open: boolean) {
-      isMenuOpen = open;
-      menuToggle.setAttribute('aria-expanded', String(isMenuOpen));
-
-      if (isMenuOpen) {
-        mobileMenu.style.maxHeight = mobileMenu.scrollHeight + 'px';
-        mobileMenu.style.opacity = '1';
-      } else {
-        mobileMenu.style.maxHeight = '0';
-        mobileMenu.style.opacity = '0';
-      }
-
-      iconMenu.style.display = isMenuOpen ? 'none' : 'block';
-      iconClose.style.display = isMenuOpen ? 'block' : 'none';
-    }
-
-    /* Toggle al pulsar el botón hamburguesa */
-    menuToggle.addEventListener('click', (e) => {
-      e.stopPropagation();
-      setMenuOpen(!isMenuOpen);
-    });
-
-    /* Cierra el menú al pulsar cualquier lugar fuera del menú y del botón */
-    document.addEventListener('click', (e) => {
-      if (!isMenuOpen) return;
-      const target = e.target as Node;
-      if (!mobileMenu.contains(target) && !menuToggle.contains(target)) {
-        setMenuOpen(false);
-      }
+  /* ─── Logo: copia el número de contacto al portapapeles ─── */
+  const logoBtn = document.getElementById('logo-copy-btn');
+  if (logoBtn) {
+    logoBtn.addEventListener('click', () => {
+      navigator.clipboard.writeText('17542995740').then(() => {
+        const phoneSpan = logoBtn.querySelector('.mt-0\\.5');
+        if (phoneSpan) {
+          const original = phoneSpan.textContent;
+          phoneSpan.textContent = '✓ Copied!';
+          setTimeout(() => { phoneSpan.textContent = original; }, 1500);
+        }
+      });
     });
   }
 </script>

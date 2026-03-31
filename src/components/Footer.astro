@@ -5,8 +5,13 @@
 
 <footer class="sticky bottom-0 z-40 bg-[#050505] text-white py-2 border-t border-white/5">
   <div class="container mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-1.5 sm:gap-0">
+    <!-- Número de contacto: primera línea en móvil, centro en desktop -->
+    <button id="footer-copy-btn" type="button" class="hidden sm:block sm:order-2 text-[11px] font-semibold tracking-wide text-black dark:text-white cursor-pointer hover:opacity-70 transition-opacity" aria-label="Copiar número de contacto">
+      Phone: 1 (754) 299-5740
+    </button>
+
     <!-- Redes sociales -->
-    <div class="flex gap-2">
+    <div class="flex gap-2 sm:order-1">
       <a href="#" class="bg-white/5 p-1.5 rounded-full hover:bg-primary transition-all" aria-label="Facebook">
         <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
       </a>
@@ -28,8 +33,22 @@
     </div>
 
     <!-- Copyright -->
-    <p class="text-gray-500 text-[10px] font-medium">
+    <p class="text-gray-500 text-[10px] font-medium sm:order-3">
       &copy; 2026 <span class="text-white/70 font-bold">Autos Bas Dealer Miami</span>. All rights reserved.
     </p>
   </div>
 </footer>
+
+<!-- Script para copiar número de contacto desde el footer -->
+<script>
+  const footerBtn = document.getElementById('footer-copy-btn');
+  if (footerBtn) {
+    footerBtn.addEventListener('click', () => {
+      navigator.clipboard.writeText('17542995740').then(() => {
+        const original = footerBtn.textContent;
+        footerBtn.textContent = '✓ Copied!';
+        setTimeout(() => { footerBtn.textContent = original; }, 1500);
+      });
+    });
+  }
+</script>
