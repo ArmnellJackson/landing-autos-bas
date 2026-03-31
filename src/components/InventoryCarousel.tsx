@@ -81,7 +81,7 @@ const VehicleCard = React.memo(function VehicleCard({
 
   return (
     <div
-      className="group overflow-hidden border-none shadow-xl hover:shadow-2xl transition-all duration-500 bg-background rounded-2xl sm:rounded-3xl h-full flex flex-col cursor-pointer"
+      className="group overflow-hidden border-none shadow-xl hover:shadow-2xl transition-all duration-500 bg-background dark:bg-[#01000f] dark:shadow-[5px_5px_0px_#000006,-5px_-5px_0px_#020018] rounded-[24px] h-full flex flex-col cursor-pointer"
       onClick={onOpen}
     >
       {/* Imagen principal del vehículo con etiqueta de carrocería */}
@@ -149,7 +149,7 @@ function GalleryModal({
     >
       {/* Contenedor del modal: 80% en mobile, max-width en desktop */}
       <div
-        className="relative w-[96%] h-[85vh] sm:w-[70%] sm:h-[80vh] lg:w-[55%] lg:h-[85vh] bg-background rounded-2xl overflow-hidden shadow-2xl flex flex-col"
+        className="relative w-[96%] h-[85vh] sm:w-[70%] sm:h-[80vh] lg:w-[55%] lg:h-[85vh] bg-background dark:bg-[#01000f] dark:shadow-[5px_5px_0px_#000006,-5px_-5px_0px_#020018] rounded-[24px] overflow-hidden shadow-2xl flex flex-col"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Botón de cierre en esquina superior derecha */}
