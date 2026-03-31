@@ -82,7 +82,7 @@ function CarouselItem({ item, index, itemWidth, round, trackItemOffset, x, trans
         <img
           src={item.image}
           alt={item.alt ?? ''}
-          className="w-full h-full object-cover"
+          className="w-full h-full object-contain"
           loading="lazy"
         />
       ) : (

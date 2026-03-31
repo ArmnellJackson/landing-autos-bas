@@ -18,7 +18,8 @@
       "Bash(grep -r PanInfo node_modules/motion/ --include=*.d.mts -l)",
       "Bash(find /c/Users/armne/OneDrive/Escritorio/proyectos/AutosBasDealerMiami/landing-autos-bas/src/pages -type f -name *.astro)",
       "Bash(pnpm install:*)",
-      "Bash(pnpm run:*)"
+      "Bash(pnpm run:*)",
+      "Bash(grep -r \"inventario_imagenes\\\\|InventoryCarousel\\\\|Carousel\\\\|modal\" /c/Users/armne/OneDrive/Escritorio/proyectos/AutosBasDealerMiami/landing-autos-bas/src --include=*.astro --include=*.tsx -l)"
     ]
   },
   "enableAllProjectMcpServers": true,
