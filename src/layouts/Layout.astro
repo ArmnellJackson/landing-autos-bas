@@ -20,14 +20,14 @@ const { title, description = "Autos Bas Dealer Miami - Premium luxury car sales 
 		<meta name="description" content={description} />
 		<title>{title}</title>
 
-		<!-- Script de inicialización de tema: evita parpadeo leyendo preferencia antes del render -->
+		<!-- Script de inicialización de tema: oscuro por defecto, evita parpadeo leyendo preferencia antes del render -->
 		<script is:inline>
 			(function() {
 				const stored = localStorage.getItem('theme');
-				if (stored === 'dark') {
-					document.documentElement.classList.add('dark');
-				} else {
+				if (stored === 'light') {
 					document.documentElement.classList.remove('dark');
+				} else {
+					document.documentElement.classList.add('dark');
 				}
 			})();
 		</script>
